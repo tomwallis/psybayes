@@ -15,7 +15,6 @@ Todo
   * Bring mcmc helper functions into package, with documentation.
   * Bayesian correlation computation functions.
 
-
 License
 ========
 
