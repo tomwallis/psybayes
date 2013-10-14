@@ -5,29 +5,31 @@
 # Log likelihood ---------------------------------------------------
 #' Log likelihood for a bernoulli trial dataset.
 #' 
-#' This function calculates the log likelihood for a vector of binomial observations
+#' This function calculates the log likelihood for a vector of binomial observations y
 #' given an equal-length vector of p values and the number of trials in each row.
+#' This can be useful, for example, when computing log likelihood on a crossvalidated dataset,
+#' where y is the observed responses and p are the model predictions.
 #' 
 #' @export  
 #' 
 #' @param y vector of successes
 #' @param p vector of probabilities
-#' @param n vector of trial numbers (1 = bernoulli trial)
+#' @param size number of trials (1 = bernoulli trial)
 #' @author Thomas Wallis
 #' @examples
 #' y <- rbinom(n=10,size=1,prob=.6)
 #' yhat <- c(0.4,0.5,0.5,0.5,.6,.6,.6,.6,.7,.7)
-#' (ll <- calc_ll(y,yhat,n=1))
+#' (ll <- calc_ll(y,yhat,size=1))
 
-calc_ll <- function(y,p,n=1){
+calc_ll <- function(y,p,size=1){
   # Manually:
-#   log_like <- lchoose(n,y) + y * log(p) + (n - y) * log(1-p)
+#   log_like <- lchoose(size,y) + y * log(p) + (size - y) * log(1-p)
 #   # sum over logs to get the final likelihood:
 #   total_log_like <- sum(log_like)  
 #   return(total_log_like)
   
   # using R density:
-  return(sum(dbinom(y,size=n,prob=p,log=TRUE)))
+  return(sum(dbinom(y,size=size,prob=p,log=TRUE)))
 }
 
 
