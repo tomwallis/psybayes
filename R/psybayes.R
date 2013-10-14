@@ -4,7 +4,7 @@
 #' @docType package
 #' @title Fitting psychophysical data with MCMC.
 #' @aliases psybayes-package package-psybayes
-#' @import rstan, plyr
+#' @import rstan plyr
 #' @details 
 #' Package: psybayes 
 #' Type: package 

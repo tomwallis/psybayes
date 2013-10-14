@@ -1,2 +1,4 @@
+export(calc_deviance)
 export(calc_ll)
+import(plyr)
 import(rstan)

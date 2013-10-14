@@ -11,8 +11,8 @@
   (and the rstan package). These will need to be properly
   installed on your system first (see
   \url{http://www.mc-stan.org} for setup). Many of these
-  functions will end up being wrappers for rstan calls, or
-  plotting functions that are commonly used.
+  functions are wrappers for rstan calls, or plotting
+  functions that are commonly used.
 }
 \details{
   psybayes
