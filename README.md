@@ -8,6 +8,14 @@ Models are fit using MCMC sampling conducted through Stan (and the rstan package
 These will need to be properly installed on your system first (see http://www.mc-stan.org for setup).
 Many of these functions are wrappers for rstan calls, or plotting functions that are commonly used.
 
+Todo
+========
+
+  * Implement WAIC in binomial_model_comparison_metrics.
+  * Bring mcmc helper functions into package, with documentation.
+  * Bayesian correlation computation functions.
+
+
 License
 ========
 
