@@ -86,4 +86,72 @@ calc_deviance <- function(y,p,size=1){
 
 
 
+# # WAIC experiment: from https://groups.google.com/forum/#!searchin/stan-users/WAIC/stan-users/irFXJXEC5YM/sOFTyHA76h4J
+# 
+# library(rstan)
+# data(cars)
+# 
+# model_code <- '
+# data{
+# int N;
+# real dist[N];
+# vector[N] speed;
+# }
+# 
+# parameters{
+# real Intercept;
+# real beta_speed;
+# real<lower=0> sigma;
+# }
+# 
+# model{
+# vector[N] glm;
+# // Priors
+# Intercept ~ normal(0,100);
+# beta_speed ~ normal(0,10);
+# sigma ~ gamma(2,1e-3);
+# // Fixed effects
+# glm <- Intercept + beta_speed * speed;
+# dist ~ normal( glm , sigma );
+# }
+# '
+# 
+# data_list <- list(
+#   N = nrow(cars) ,
+#   dist = cars$dist ,
+#   speed = cars$speed
+# )
+# 
+# # like lm( dist ~ speed, cars )
+# m <- stan( model_code=model_code , data=data_list )
+# 
+# p <- extract(m)
+# 
+# # for each data point, for each sample, compute log-likelihood
+# # then pD is sum over data of variance of log-lik
+# pD <- 0
+# for ( i in 1:nrow(cars) ) {
+#   # compute variance of log-lik for point i over posterior
+#   ll <- dnorm( cars$dist[i] , 
+#                mean=p$Intercept + p$beta_speed * cars$speed[i] ,
+#                sd=p$sigma , log=TRUE )
+#   pD <- pD + var(ll)
+# }
+# 
+# # for each data point, compute log of average likelihood
+# # sum is log posterior likelihood
+# lppd <- 0
+# for ( i in 1:nrow(cars) ) {
+#   # compute log of average likelihood
+#   ll <- dnorm( cars$dist[i] , 
+#                mean=p$Intercept + p$beta_speed * cars$speed[i] ,
+#                sd=p$sigma , log=FALSE )
+#   lppd <- lppd + log(mean(ll))
+# }
+# 
+# # WAIC
+# ( -2*(lppd - pD) )
+
+
+
 
