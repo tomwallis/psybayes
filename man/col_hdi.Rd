@@ -1,8 +1,8 @@
-\name{col_quantile}
-\alias{col_quantile}
-\title{Calculate quantiles along the columns of a matrix.}
+\name{col_hdi}
+\alias{col_hdi}
+\title{Calculate the HDI along the columns of a matrix.}
 \usage{
-  col_quantile(X, probs = c(0.025, 0.975))
+  col_hdi(X, cred_mass = 0.95)
 }
 \arguments{
   \item{X}{a matrix of numbers}
@@ -11,20 +11,20 @@
 }
 \value{
   a matrix where columns correspond to columns of \code{X},
-  and rows to each requested \code{prob}.
+  and rows to the lower and upper HDI limits.
 }
 \description{
-  Receives a matrix X as input, and calculates quantiles
+  Receives a matrix X as input, and calculates the HDI
   along the columns using sapply.
 }
 \examples{
 X <- matrix(rnorm(1000),ncol=10)
-col_quantile(X)
+col_hdi(X)
 }
 \author{
   Thomas Wallis
 }
 \seealso{
-  \link{hdi} \link{col_hdi}
+  \link{hdi} \link{col_quantile}
 }
 

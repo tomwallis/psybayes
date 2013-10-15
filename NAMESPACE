@@ -1,5 +1,7 @@
 export(calc_deviance)
 export(calc_ll)
-export(quantile_cols)
+export(col_hdi)
+export(col_quantile)
+export(hdi)
 import(plyr)
 import(rstan)

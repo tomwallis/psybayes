@@ -19,4 +19,5 @@ Collate:
     'psybayes.R'
     'bayesian_correlations.R'
     'binomial_model_comparison_metrics.R'
-    'mcmc_helper_funcs.R'
+    'mcmc_sample_helpers.R'
+    'quantiles_hdis.R'
