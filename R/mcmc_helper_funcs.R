@@ -24,40 +24,44 @@ col_quantile <- function(X,probs=c(0.025,0.975)){
   return(q)
 }
 
-## HDI of mcmc---------------------------
+# HDI of a vector---------------------------
+#' Calculate the HDI (highest density interval) of a vector.
+#' 
+#' Receives a vector x as input, and calculates the hdi for a given mass.
+#' 
+#' @export  
+#' 
+#' @param x a vector of numbers.
+#' @param cred_mass the credible mass to calculate (scalar from 0 to 1).
+#' @return a vector of length 2 containing the limits of the HDI.
+#' @author Thomas Wallis modified original code by John Kruschke, from Doing Bayesian Data Analysis.
+#' @examples
+#' x <- rnorm(1000)
+#' hdi(x)
+#' 
+hdi = function( x , cred_mass=0.95 ) {
+  sorted_x = sort( x )
+  ci_ind = floor( cred_mass * length( sorted_x ) )
+  n_ci = length( sorted_x ) - ci_ind
+  ci_width = rep( 0 , n_ci )
+  
+  # iterate through each lower bound, finding the smallest distance.
+  fun <- function(i,x,ci_ind) x[i + ci_ind] - x[i]
+  ci_width <- sapply(1:n_ci, fun, sorted_x, ci_ind)
 
-hdiOfMCMC = function( sampleVec , credMass=0.95 ) {
-  # Function by John Kruschke, from "Doing Bayesian Data Analysis" text.
-  # Computes highest density interval from a sample of representative values,
-  #   estimated as shortest credible interval.
-  # Arguments:
-  #   sampleVec
-  #     is a vector of representative values from a probability distribution.
-  #   credMass
-  #     is a scalar between 0 and 1, indicating the mass within the credible
-  #     interval that is to be estimated.
-  # Value:
-  #   HDIlim is a vector containing the limits of the HDI
-  sortedPts = sort( sampleVec )
-  ciIdxInc = floor( credMass * length( sortedPts ) )
-  nCIs = length( sortedPts ) - ciIdxInc
-  ciWidth = rep( 0 , nCIs )
-  for ( i in 1:nCIs ) {
-    ciWidth[ i ] = sortedPts[ i + ciIdxInc ] - sortedPts[ i ]
-  }
-  HDImin = sortedPts[ which.min( ciWidth ) ]
-  HDImax = sortedPts[ which.min( ciWidth ) + ciIdxInc ]
-  HDIlim = c( HDImin , HDImax )
-  return( HDIlim )
+  hdi_min = sorted_x[ which.min( ci_width ) ]
+  hdi_max = sorted_x[ which.min( ci_width ) + ci_ind ]
+  hdi_lim = c( hdi_min , hdi_max )
+  return( hdi_lim )
 }
 
 # vectorised hdi---------------------
 # 
-vectorHDI <- function(x,credMass=0.95){
+vectorHDI <- function(x,cred_mass=0.95){
   n_cols <- NCOL(x)
   q <- matrix(rep(NA,times=n_cols*2),nrow=2)
   for (i in 1:n_cols){
-    q[,i] <- hdiOfMCMC(x[,i],credMass=credMass)
+    q[,i] <- hdiOfMCMC(x[,i],cred_mass=cred_mass)
   }
   return(q)
 }
