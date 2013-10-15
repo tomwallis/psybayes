@@ -1,13 +1,26 @@
 # A bunch of generic helper functions for analysing mcmc output.
 # TSAW wrote it, unless otherwise noted. tsawallis@gmail.com
 
-# Vectorised quantile function-------------------
-vectorQuants <- function(x,probs=c(0.025,0.975)){
-  n_cols <- NCOL(x)
-  q <- matrix(rep(NA,times=n_cols*length(probs)),nrow=length(probs))
-  for (i in 1:n_cols){
-    q[,i] <- quantile(x[,i],probs=probs)
-  }
+
+# Vectorised quantile function ---------------------------------------------------
+#' Calculate quantiles along the columns of a matrix.
+#' 
+#' Receives a matrix X as input, and calculates quantiles along the columns using sapply.
+#' 
+#' @export  
+#' 
+#' @param X a matrix of numbers
+#' @param probs vector of quantiles to compute.
+#' @return a matrix where columns correspond to columns of \code{X}, and rows to each requested \code{prob}.
+#' @author Thomas Wallis
+#' @examples
+#' X <- matrix(rnorm(1000),ncol=10)
+#' quantile_cols(X)
+
+quantile_cols <- function(X,probs=c(0.025,0.975)){
+  n_cols <- NCOL(X)
+  fun <- function(i,X,probs) quantile(X[,i],probs=probs)
+  q <- sapply(1:n_cols,fun,X,probs=probs)
   return(q)
 }
 
