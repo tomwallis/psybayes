@@ -222,7 +222,7 @@ bcor_plot <- function(data_frame,fit, out_file='none', true_correlations=FALSE, 
       if(plot_prior==TRUE){
         prior_frame <- data.frame(sample=rep(NA,length=length(params$lp__)))
         prior_frame$sample <- params$Prior_samples[,i,j]
-        fig <- fig + stat_bin(data=prior_frame,aes(y=..density.., colour=NULL), fill = "black", alpha = 0.25, binwidth=0.03)
+        fig <- fig + stat_bin(data=prior_frame,aes(x=sample,y=..density.., colour=NULL), fill = "black", alpha = 0.25, binwidth=0.03)
       }      
       
       fig <- fig + stat_bin(data=sample_frame,aes(x=sample, y = ..density.., colour=NULL), binwidth=0.03)
