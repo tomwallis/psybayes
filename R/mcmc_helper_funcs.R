@@ -15,9 +15,9 @@
 #' @author Thomas Wallis
 #' @examples
 #' X <- matrix(rnorm(1000),ncol=10)
-#' quantile_cols(X)
+#' col_quantile(X)
 
-quantile_cols <- function(X,probs=c(0.025,0.975)){
+col_quantile <- function(X,probs=c(0.025,0.975)){
   n_cols <- NCOL(X)
   fun <- function(i,X,probs) quantile(X[,i],probs=probs)
   q <- sapply(1:n_cols,fun,X,probs=probs)

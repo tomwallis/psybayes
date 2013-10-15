@@ -1,8 +1,8 @@
-\name{quantile_cols}
-\alias{quantile_cols}
+\name{col_quantile}
+\alias{col_quantile}
 \title{Calculate quantiles along the columns of a matrix.}
 \usage{
-  quantile_cols(X, probs = c(0.025, 0.975))
+  col_quantile(X, probs = c(0.025, 0.975))
 }
 \arguments{
   \item{X}{a matrix of numbers}
@@ -19,7 +19,7 @@
 }
 \examples{
 X <- matrix(rnorm(1000),ncol=10)
-quantile_cols(X)
+col_quantile(X)
 }
 \author{
   Thomas Wallis
