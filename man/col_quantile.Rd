@@ -24,4 +24,7 @@ col_quantile(X)
 \author{
   Thomas Wallis
 }
+\seealso{
+  \link{hdi}
+}
 

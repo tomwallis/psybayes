@@ -25,4 +25,7 @@ hdi(x)
   Thomas Wallis modified original code by John Kruschke,
   from Doing Bayesian Data Analysis.
 }
+\seealso{
+  \link{col_quantile}
+}
 
