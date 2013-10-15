@@ -15,8 +15,10 @@
   \item{fit}{The stanfit object produced by
   \link{bcor_mcmc}.}
 
-  \item{variable_names}{If true, include variable names
-  from the data_frame in table.}
+  \item{variable_names}{Either \code{FALSE} (columns in
+  table will be named after data_frame) or a character
+  vector of length = ncol(data_frame) containing a label
+  for each variable.}
 
   \item{central_tendency_function}{A function to calculate
   the data's central tendency. Should return a scalar with

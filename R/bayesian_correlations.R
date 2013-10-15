@@ -1,5 +1,5 @@
 
-# bcor_mcmc----------------------------------
+# Do mcmc sampling ----------------------------------
 #' Estimate Bayesian (posterior) correlation coefficients. 
 #' 
 #' Estimate Pearson's r and Spearman's rho between the columns in a data frame.
@@ -152,7 +152,7 @@ model {
 }
 
 
-# bcor_plot ---------------------------
+# Produce plots ---------------------------
 #' Plot posterior correlation coefficients. 
 #' 
 #' Plot the correlation coefficients estimated by bcor_mcmc.
@@ -239,7 +239,7 @@ bcor_plot <- function(data_frame,fit, out_file='none', true_correlations=FALSE, 
 }
 
 
-# bcor_table ---------------------------
+# Produce tables ---------------------------
 #' Table of correlation coefficients with HDIs.
 #' 
 #' Generate a numerical matrix of the correlation coefficients estimated by bcor_mcmc.
@@ -251,7 +251,8 @@ bcor_plot <- function(data_frame,fit, out_file='none', true_correlations=FALSE, 
 #' are the variables whose correlation structure you wish to estimate. 
 #' All variables must be continuous (no factors).
 #' @param fit           The stanfit object produced by \link{bcor_mcmc}.
-#' @param variable_names      If true, include variable names from the data_frame in table.
+#' @param variable_names      Either \code{FALSE} (columns in table will be named after data_frame) or
+#' a character vector of length = ncol(data_frame) containing a label for each variable.
 #' @param central_tendency_function   A function to calculate the data's central tendency. Should return a
 #' scalar with input as a vector. 
 #' @param spread_function             A function to calculate the data's spread (e.g. hdi or quantiles).
