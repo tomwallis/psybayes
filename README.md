@@ -11,9 +11,9 @@ Many of these functions are wrappers for rstan calls, or plotting functions that
 Todo
 ========
 
+  * Wrapper functions for fitting GLMs. How best to structure functions?
   * Implement WAIC in binomial_model_comparison_metrics.
-  * Bring mcmc helper functions into package, with documentation.
-  * Bayesian correlation computation functions.
+
 
 
 License
