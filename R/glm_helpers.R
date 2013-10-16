@@ -56,7 +56,7 @@ linpred <- function(X, beta){
 #' 
 #' This function can be used to create an S3 object of class "psybayes_link" that
 #' includes link and inverse link functions for transforming from linear predictor
-#' space into probability space, as well as code for inserting into Stan models.
+#' space into probability space. Eventually this should have code for inserting into Stan models.
 #' It is a modified version of \link{make.link} from the stats package.
 #' 
 #' @export
@@ -67,9 +67,9 @@ linpred <- function(X, beta){
 #' @return Returns an object of class "psybayes_link". This is really just a list, with the 
 #' following components:
 #' \itemize{
-#' \item \code{linkfun}
-#' \item \code{linkinv}
-#' \item \code{stan_string}
+#' \item \code{linkfun}: transform from probability to linear predictor.
+#' \item \code{linkinv}: transform from linear predictor to probability.
+#' \item \code{stan_string} **NOT IMPLEMENTED YET**
 #' \item \code{name}
 #' }
 #' 

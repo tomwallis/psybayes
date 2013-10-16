@@ -12,6 +12,7 @@ Todo
 ========
 
   * Wrapper functions for fitting GLMs. How best to structure functions?
+  * Somehow include Stan model lines in psy_link functions?
   * Implement WAIC in binomial_model_comparison_metrics.
 
 
