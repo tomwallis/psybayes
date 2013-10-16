@@ -11,7 +11,7 @@
 #' @param cred_mass the credible mass to calculate (scalar from 0 to 1).
 #' @return a vector of length 2 containing the limits of the HDI.
 #' @author Thomas Wallis modified original code by John Kruschke, from Doing Bayesian Data Analysis.
-#' @seealso \link{col_quantile} \link{col_hdi}
+#' @family distribution_summaries
 #' @examples
 #' x <- rnorm(1000)
 #' hdi(x)
@@ -45,7 +45,7 @@ hdi = function( x , cred_mass=0.95 ) {
 #' @param probs vector of quantiles to compute.
 #' @return a matrix where columns correspond to columns of \code{X}, and rows to each requested \code{prob}.
 #' @author Thomas Wallis
-#' @seealso \link{hdi} \link{col_hdi}
+#' @family distribution_summaries
 #' @examples
 #' X <- matrix(rnorm(1000),ncol=10)
 #' col_quantile(X)
@@ -70,7 +70,7 @@ col_quantile <- function(X,probs=c(0.025,0.975)){
 #' @param probs vector of quantiles to compute.
 #' @return a matrix where columns correspond to columns of \code{X}, and rows to the lower and upper HDI limits.
 #' @author Thomas Wallis
-#' @seealso \link{hdi} \link{col_quantile}
+#' @family distribution_summaries
 #' @examples
 #' X <- matrix(rnorm(1000),ncol=10)
 #' col_hdi(X)
