@@ -23,3 +23,4 @@ Collate:
     'quantiles_hdis.R'
     'detection_data.R'
     'glm_helpers.R'
+    'data_munging.R'

@@ -1,6 +1,7 @@
 export(bcor_mcmc)
 export(bcor_plot)
 export(bcor_table)
+export(bern2binom)
 export(calc_deviance)
 export(calc_ll)
 export(col_hdi)
