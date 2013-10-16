@@ -48,4 +48,7 @@ eta <- linpred(X,betas)
 \author{
   Thomas Wallis.
 }
+\seealso{
+  Other glm_helpers: \code{\link{psy_link}}
+}
 
