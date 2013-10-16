@@ -11,8 +11,12 @@
   \item{formula}{The formula for the model design at the
   lowest level of the model.}
 
-  \item{group_factor}{A factor (usually "subject") over
-  which to group.}
+  \item{group_factor}{A character vector specifying the
+  name of one or more grouping variables found in
+  \code{data}. Usually "subject".}
+
+  \item{response}{A character vector specifying the name of
+  the response variable (correct or incorrect).}
 }
 \value{
   Returns a new data frame.
