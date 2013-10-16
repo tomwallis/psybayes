@@ -21,3 +21,5 @@ Collate:
     'binomial_model_comparison_metrics.R'
     'mcmc_sample_helpers.R'
     'quantiles_hdis.R'
+    'detection_data.R'
+    'glm_helpers.R'
