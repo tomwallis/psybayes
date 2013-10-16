@@ -42,6 +42,7 @@ See the example for bcor_mcmc.
   Thomas Wallis.
 }
 \seealso{
-  \link{bcor_mcmc}, \link{bcor_table}
+  Other bcor: \code{\link{bcor_mcmc}},
+  \code{\link{bcor_table}}
 }
 

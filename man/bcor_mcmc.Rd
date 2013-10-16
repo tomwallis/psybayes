@@ -74,7 +74,9 @@ cor(dat)
   Thomas Wallis.
 }
 \seealso{
-  \link{bcor_plot}, \link{bcor_table}, \link{stan_sample},
-  \link{stan}
+  \link{stan_sample}, \link{stan}
+
+  Other bcor: \code{\link{bcor_plot}},
+  \code{\link{bcor_table}}
 }
 

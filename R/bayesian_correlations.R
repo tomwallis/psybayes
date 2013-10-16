@@ -29,7 +29,8 @@
 #' 
 #' 
 #' @author Thomas Wallis.
-#' @seealso \link{bcor_plot}, \link{bcor_table}, \link{stan_sample}, \link{stan}
+#' @seealso \link{stan_sample}, \link{stan}
+#' @family bcor
 #' @examples
 #' # generate random variables with a specified correlation structure (from: http://www.r-bloggers.com/simulating-data-following-a-given-covariance-structure/)
 #' # n_var variables. Assume that they are standardised (mean 0 sd 1).
@@ -176,7 +177,7 @@ model {
 #' The dark histogram shows samples from the posterior, the faint histogram
 #' shows samples from the prior.
 #' @author Thomas Wallis.
-#' @seealso \link{bcor_mcmc}, \link{bcor_table}
+#' @family bcor
 #' @examples
 #' See the example for bcor_mcmc.
 
@@ -262,7 +263,7 @@ bcor_plot <- function(data_frame,fit, out_file='none', true_correlations=FALSE, 
 #' Product Moment correlation coefficent, one is for Spearman's rho (rank order correlation) and the 
 #' third are the same computed from samples of the prior distribution.
 #' @author Thomas Wallis.
-#' @seealso \link{bcor_mcmc}, \link{bcor_plot}
+#' @family bcor
 #' @examples
 #' See the example for bcor_mcmc.
 
