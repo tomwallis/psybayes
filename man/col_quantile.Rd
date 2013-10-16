@@ -25,6 +25,7 @@ col_quantile(X)
   Thomas Wallis
 }
 \seealso{
-  \link{hdi} \link{col_hdi}
+  Other distribution_summaries: \code{\link{col_hdi}},
+  \code{\link{hdi}}
 }
 

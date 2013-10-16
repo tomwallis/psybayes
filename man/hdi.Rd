@@ -26,6 +26,7 @@ hdi(x)
   from Doing Bayesian Data Analysis.
 }
 \seealso{
-  \link{col_quantile} \link{col_hdi}
+  Other distribution_summaries: \code{\link{col_hdi}},
+  \code{\link{col_quantile}}
 }
 
