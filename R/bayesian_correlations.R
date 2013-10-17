@@ -77,7 +77,7 @@ bcor_mcmc <- function(data_frame, prior = 'lkj_corr(1.0)', ...){
                   n_vars = ncol(data_frame))
   
   # Stan model -----------------------------------------------------------
-  model <- paste('
+  model <- paste0('
   data{
   int<lower=1> n_obs;
   int<lower=2> n_vars;
@@ -145,7 +145,7 @@ model {
   }
 }
 
-', sep = "")
+')
   
   fit <- stan_sample(model_string = model, stan_data = stan_data, ...)
   
