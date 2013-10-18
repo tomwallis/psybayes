@@ -27,6 +27,13 @@
 #' 
 #' For a big example of all this in action, run \code{example(bcor_mcmc)}.
 #' 
+#' Note: on my todo list is to fix the warning output about incrementing the log Jacobian. 
+#' However, this doesn't seem to be a problem for the sampling. See \url{https://groups.google.com/forum/#!topic/stan-users/9GCAlBWVBtI}.
+#' "Like some of our other warning messages, there are "false positives" 
+#' from this because some of the transforms applied 
+#' (like taking the column of a matrix using function col()) have 
+#' a zero log Jacobian adjustment. "
+#' 
 #' 
 #' @author Thomas Wallis.
 #' @seealso \link{stan_sample}, \link{stan}
