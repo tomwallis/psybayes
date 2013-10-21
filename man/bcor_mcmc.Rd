@@ -57,7 +57,7 @@
 # n_var variables. Assume that they are standardised (mean 0 sd 1).
 n_vars <- 4
 # number of observations to simulate
-n_obs = 200
+n_obs = 100
 # correlation matrix:
 M = matrix(c(1, 0.7, 0.7, 0.5,
              0.7, 1, 0.95, 0.3,
@@ -77,7 +77,15 @@ fit <- bcor_mcmc(dat)
 print(fit)
 bcor_plot(dat,fit,true_correlation=M)
 tables <- bcor_table(dat,fit)
+
+# try with a weakly-informative prior (more density over unit diagonal -- should be closer to zero with less data)
+fit_2 <- bcor_mcmc(dat, prior = 'lkj_corr(2.0)')
+print(fit_2)
+bcor_plot(dat,fit_2,true_correlation=M)
+tables_2 <- bcor_table(dat,fit_2)
+
 tables$pearson_table
+tables_2$pearson_table
 cor(dat)
 }
 \author{
