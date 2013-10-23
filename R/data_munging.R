@@ -69,3 +69,143 @@ bern2binom <- function(data, formula, group_factors='none', response='y'){
   # return a list of both the new matrices:
   return(list(binom_dat = binom_dat, design_matrix = X))
 }
+
+
+# Bin bernoulli trials along a continuous x -------------------------
+#' Bin bernoulli trials on a continuous variable x, calculate stats.
+#' 
+#' Takes an x and a y vector, where y is binary (bernoulli trials).
+#' 
+#' @export  
+#' @import plyr
+#' 
+#' @return a data frame with x bins as rows, and the number of successes, fails, and trials in each bin.
+#' 
+#' @param x   a numeric vector
+#' @param y   binary outcomes the same length as x
+#' @param breaks  a single number giving the number of bins desired, or a vector of breakpoints between cells.
+#' @param equal_spacing  if true, bins are equally spaced along x. If false, bins are of approximately equal 
+#' sizes, centred on average. Doesn't do anything if you pass \code{breaks} as a vector of breakpoints.
+#'
+#' @author Thomas Wallis
+#' @examples
+#' library(ggplot2)
+#' x <- rnorm(100)
+#' y <- rbinom(100,1,prob=0.5)
+#' qplot(x,y)
+#' equal_spacing <- bern_bin(x,y,breaks=5)
+#' equal_numbers <- bern_bin(x,y,breaks=5,equal_spacing=FALSE) 
+#' custom_spacing <- bern_bin(x,y,breaks=seq(-3,3,l=6))
+#' 
+#' # beta distribution confidence intervals:
+#' equal_spacing <- beta_cis(equal_spacing)
+#' equal_numbers <- beta_cis(equal_numbers)
+#' custom_spacing <- beta_cis(custom_spacing)
+#' 
+#' # plot:
+#' equal_spacing$label <- 'Equal spacing'
+#' equal_numbers$label <- 'Equal numbers'
+#' custom_spacing$label <- 'Custom'
+#' 
+#' plot_dat <- rbind(equal_spacing,equal_numbers,custom_spacing)
+#' 
+#' fig <- ggplot(plot_dat,aes(x=xmid,xmax=xmax,xmin=xmin,y=y,ymax=ymax,ymin=ymin)) + geom_point() + geom_errorbar() + geom_errorbarh()
+#' fig <- fig + facet_wrap(~ label, ncol=1)
+#' fig
+
+bern_bin <- function(x,y,breaks,equal_spacing=TRUE){
+  
+  # from http://r.789695.n4.nabble.com/Obtaining-midpoints-of-class-intervals-produced-by-cut-and-table-td908058.html
+  cut2num <- function(f){ 
+    labs <- levels(f) 
+    d <- data.frame(xmin = c(NA, as.numeric( sub("\\((.+),.*", "\\1", labs[-1]) )), 
+                    xmax = as.numeric( sub("[^,]*,([^]]*)\\]", "\\1", labs) ))
+    # correct for lower=TRUE in regexp (causes regexp not to match first label:
+    d$xmin[1] <- as.numeric(sub("\\[(.+),.*", "\\1", labs)[1])
+    d$xmid <- rowMeans(d) 
+    d 
+  } 
+  
+  produce_df <- function(breaks){
+    # use cut to produce factors. Find midpoints using the cut2num function.
+    x_cut <- cut(x,breaks=breaks,include.lowest=TRUE)
+    cut_limits <- cut2num(x_cut)
+    
+    d <- data.frame(x = x_cut, y = y)
+    binomial_df <- ddply(d,.(x),summarise,n_success = sum(y), n_trials = length(y))
+    
+    cut_limits$n_success <- binomial_df$n_success
+    cut_limits$n_fails <- binomial_df$n_trials - binomial_df$n_success
+    cut_limits$n_trials <- binomial_df$n_trials
+    cut_limits$prop_corr <- binomial_df$n_success / binomial_df$n_trials
+    
+    return(cut_limits)
+  }
+  
+
+  if(length(breaks)>1){
+    df <- produce_df(breaks)
+    return(df)
+  } else {
+    if(equal_spacing==TRUE){
+      df <- produce_df(breaks)
+      return(df)
+    } 
+    
+    if(equal_spacing==FALSE & length(breaks) == 1) {
+      # use quantiles to produce break points.
+      breaks <- quantile(x, probs = seq(0, 1, length = breaks + 1))
+      df <- produce_df(breaks)
+      return(df)
+    }   
+  }
+}
+
+# Beta distribution CIs -------------------------
+#' From binomial data frame, compute confidence limits of beta distribution.
+#' 
+#' Input is a data frame containing columns n_success, n_fails.
+#' 
+#' @export  
+#' 
+#' @return the data frame with added y, ymin and ymax columns. Data (n_successes, etc) 
+#' will be original, not rule-of-succession corrected.
+#' 
+#' @param data   a data frame.
+#' @param probs   probabilities to return (increasing). If this is a length 3 vector, 
+#' the values will be assigned to ymin, y and ymax. If it's a vector of 
+#' length 2, then this specifies ymin and ymax, and y will be the proportion correct.
+#' @param rule_of_succession  If true, add one success and one failure to every observation
+#' (Laplace's rule of succession correction).
+#'
+#' @author Thomas Wallis
+#' @examples
+#' example(bern_bin)
+
+beta_cis <- function(data, probs = c(0.025, 0.5, 0.975), rule_of_succession = TRUE){
+  d <- data
+  
+  if(rule_of_succession == TRUE){
+    d$n_success <- data$n_success + 1
+    d$n_fails <- data$n_fails + 1
+    d$n_trials <- data$n_trials + 2
+  }
+  
+
+  if(length(probs) == 3){
+    data$ymin <- qbeta(probs[1],d$n_success,d$n_fails)
+    data$y <- qbeta(probs[2],d$n_success,d$n_fails)
+    data$ymax <- qbeta(probs[3],d$n_success,d$n_fails)
+  }
+  
+  if(length(probs) == 2){
+    data$ymin <- qbeta(probs[1],d$n_success,d$n_fails)
+    data$y <- d$n_success / (d$n_success + d$n_fails)
+    data$ymax <- qbeta(probs[3],d$n_success,d$n_fails)
+  }
+  
+  if(length(probs) != 3 & length(probs) != 2) 
+    stop("probabilities must be a vector of length 2 or 3")
+  
+  return(data)
+}
