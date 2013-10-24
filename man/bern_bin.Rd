@@ -2,9 +2,8 @@
 \alias{bern_bin}
 \title{Bin bernoulli trials on a continuous variable x, calculate stats.}
 \usage{
-  bern_bin(data, breaks, equal_spacing = TRUE,
-    x_name = "x", y_name = "y",
-    additional_factors = "none", ...)
+  bern_bin(data, breaks, spacing = "equal", x_name = "x",
+    y_name = "y", additional_factors = "none", ...)
 }
 \arguments{
   \item{data}{a data frame containing (at least) a numeric
@@ -13,10 +12,11 @@
   \item{breaks}{a single number giving the number of bins
   desired, or a vector of breakpoints between cells.}
 
-  \item{equal_spacing}{if true, bins are equally spaced
-  along x. If false, bins are of approximately equal sizes,
-  centred on average. Doesn't do anything if you pass
-  \code{breaks} as a vector of breakpoints.}
+  \item{spacing}{a character vector of either
+  \code{"equal"} or \code{"quantile"}, producing equally
+  spaced bins along x or bins with approximately equal
+  numbers of data points, respectively. Doesn't do anything
+  if you pass \code{breaks} as a vector of breakpoints.}
 
   \item{x_name}{A character vector specifying the name of
   the continuous variable to bin over.}
@@ -43,7 +43,7 @@ library(ggplot2)
 dat <- data.frame(x = rnorm(100), y = rbinom(100,1,prob=0.5))
 qplot(dat$x,dat$y)
 equal_spacing <- bern_bin(dat,breaks=5)
-equal_numbers <- bern_bin(dat,breaks=5,equal_spacing=FALSE)
+equal_numbers <- bern_bin(dat,breaks=5,spacing='quantile')
 custom_spacing <- bern_bin(dat,breaks=seq(-3,3,l=6))
 
 # plot:

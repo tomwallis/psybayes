@@ -83,8 +83,9 @@ bern2binom <- function(data, formula, group_factors='none', response='y'){
 #' 
 #' @param data   a data frame containing (at least) a numeric vector \code{x} and a binary outcome vector \code{y}.
 #' @param breaks  a single number giving the number of bins desired, or a vector of breakpoints between cells.
-#' @param equal_spacing  if true, bins are equally spaced along x. If false, bins are of approximately equal 
-#' sizes, centred on average. Doesn't do anything if you pass \code{breaks} as a vector of breakpoints.
+#' @param spacing  a character vector of either \code{"equal"} or \code{"quantile"}, producing equally spaced
+#' bins along x or bins with approximately equal numbers of data points, respectively. 
+#' Doesn't do anything if you pass \code{breaks} as a vector of breakpoints.
 #' @param x_name A character vector specifying the name of the continuous variable to bin over.
 #' @param y_name A character vector specifying the name of the binary outcome variable.
 #' @param additional_factors  A character vector specifying any factors in the dataset to split x over.
@@ -97,7 +98,7 @@ bern2binom <- function(data, formula, group_factors='none', response='y'){
 #' dat <- data.frame(x = rnorm(100), y = rbinom(100,1,prob=0.5))
 #' qplot(dat$x,dat$y)
 #' equal_spacing <- bern_bin(dat,breaks=5)
-#' equal_numbers <- bern_bin(dat,breaks=5,equal_spacing=FALSE) 
+#' equal_numbers <- bern_bin(dat,breaks=5,spacing='quantile') 
 #' custom_spacing <- bern_bin(dat,breaks=seq(-3,3,l=6))
 #' 
 #' # plot:
@@ -120,7 +121,7 @@ bern2binom <- function(data, formula, group_factors='none', response='y'){
 #' fig <- fig + facet_wrap(~ a_factor, ncol=1)
 #' fig
 
-bern_bin <- function(data, breaks, equal_spacing=TRUE, 
+bern_bin <- function(data, breaks, spacing = 'equal', 
                      x_name = "x",
                      y_name = "y",
                      additional_factors = "none", ...){
@@ -176,17 +177,19 @@ bern_bin <- function(data, breaks, equal_spacing=TRUE,
     df <- produce_df(breaks)
     return(df)
   } else {
-    if(equal_spacing==TRUE){
+    if(spacing=="equal"){
       df <- produce_df(breaks)
       return(df)
     } 
     
-    if(equal_spacing==FALSE & length(breaks) == 1) {
+    if(spacing=="quantile") {
       # use quantiles to produce break points.
       breaks <- quantile(x, probs = seq(0, 1, length = breaks + 1))
       df <- produce_df(breaks)
       return(df)
-    }   
+    }
+    
+    if(spacing != "equal" & spacing != "quantile") stop("improperly specified spacing")
   }
 }
 
