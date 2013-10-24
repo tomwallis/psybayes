@@ -108,7 +108,7 @@ bern2binom <- function(data, formula, group_factors='none', response='y'){
 #' 
 #' plot_dat <- rbind(equal_spacing,equal_numbers,custom_spacing)
 #' 
-#' fig <- ggplot(plot_dat,aes(x=xmid,xmax=xmax,xmin=xmin,y=y,ymax=ymax,ymin=ymin)) + geom_point() + geom_errorbar() + geom_errorbarh()
+#' fig <- ggplot(plot_dat,aes(x=xmid,xmax=xmax,xmin=xmin,y=ymid,ymax=ymax,ymin=ymin)) + geom_point() + geom_errorbar() + geom_errorbarh()
 #' fig <- fig + facet_wrap(~ label, ncol=1)
 #' fig
 #' 
@@ -117,7 +117,7 @@ bern2binom <- function(data, formula, group_factors='none', response='y'){
 #' dat$a_factor <- factor(dat$a_factor)
 #' 
 #' binned <- bern_bin(dat,breaks=5, additional_factors = "a_factor", probs = c(0.025, 0.975))
-#' fig <- ggplot(binned,aes(x=xmid,xmax=xmax,xmin=xmin,y=y,ymax=ymax,ymin=ymin)) + geom_point() + geom_errorbar() + geom_errorbarh()
+#' fig <- ggplot(binned,aes(x=xmid,xmax=xmax,xmin=xmin,y=ymid,ymax=ymax,ymin=ymin)) + geom_point() + geom_errorbar() + geom_errorbarh()
 #' fig <- fig + facet_wrap(~ a_factor, ncol=1)
 #' fig
 
