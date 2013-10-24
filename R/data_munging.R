@@ -81,26 +81,24 @@ bern2binom <- function(data, formula, group_factors='none', response='y'){
 #' 
 #' @return a data frame with x bins as rows, and the number of successes, fails, and trials in each bin.
 #' 
-#' @param x   a numeric vector
-#' @param y   binary outcomes the same length as x
+#' @param data   a data frame containing (at least) a numeric vector \code{x} and a binary outcome vector \code{y}.
 #' @param breaks  a single number giving the number of bins desired, or a vector of breakpoints between cells.
 #' @param equal_spacing  if true, bins are equally spaced along x. If false, bins are of approximately equal 
 #' sizes, centred on average. Doesn't do anything if you pass \code{breaks} as a vector of breakpoints.
+#' @param x_name A character vector specifying the name of the continuous variable to bin over.
+#' @param y_name A character vector specifying the name of the binary outcome variable.
+#' @param additional_factors  A character vector specifying any factors in the dataset to split x over.
+#' @param ... additional arguments passed to \link{beta_cis}.
 #'
 #' @author Thomas Wallis
+#' @seealso \link{beta_cis}
 #' @examples
 #' library(ggplot2)
-#' x <- rnorm(100)
-#' y <- rbinom(100,1,prob=0.5)
-#' qplot(x,y)
-#' equal_spacing <- bern_bin(x,y,breaks=5)
-#' equal_numbers <- bern_bin(x,y,breaks=5,equal_spacing=FALSE) 
-#' custom_spacing <- bern_bin(x,y,breaks=seq(-3,3,l=6))
-#' 
-#' # beta distribution confidence intervals:
-#' equal_spacing <- beta_cis(equal_spacing)
-#' equal_numbers <- beta_cis(equal_numbers)
-#' custom_spacing <- beta_cis(custom_spacing)
+#' dat <- data.frame(x = rnorm(100), y = rbinom(100,1,prob=0.5))
+#' qplot(dat$x,dat$y)
+#' equal_spacing <- bern_bin(dat,breaks=5)
+#' equal_numbers <- bern_bin(dat,breaks=5,equal_spacing=FALSE) 
+#' custom_spacing <- bern_bin(dat,breaks=seq(-3,3,l=6))
 #' 
 #' # plot:
 #' equal_spacing$label <- 'Equal spacing'
@@ -112,8 +110,26 @@ bern2binom <- function(data, formula, group_factors='none', response='y'){
 #' fig <- ggplot(plot_dat,aes(x=xmid,xmax=xmax,xmin=xmin,y=y,ymax=ymax,ymin=ymin)) + geom_point() + geom_errorbar() + geom_errorbarh()
 #' fig <- fig + facet_wrap(~ label, ncol=1)
 #' fig
+#' 
+#' ## Show use of additional factors, and changing beta distribution calculations:
+#' dat$a_factor <- rbinom(nrow(dat),1,prob=0.5)
+#' dat$a_factor <- factor(dat$a_factor)
+#' 
+#' binned <- bern_bin(dat,breaks=5, additional_factors = "a_factor", probs = c(0.025, 0.975))
+#' fig <- ggplot(binned,aes(x=xmid,xmax=xmax,xmin=xmin,y=y,ymax=ymax,ymin=ymin)) + geom_point() + geom_errorbar() + geom_errorbarh()
+#' fig <- fig + facet_wrap(~ a_factor, ncol=1)
+#' fig
 
-bern_bin <- function(x,y,breaks,equal_spacing=TRUE){
+bern_bin <- function(data, breaks, equal_spacing=TRUE, 
+                     x_name = "x",
+                     y_name = "y",
+                     additional_factors = "none", ...){
+  
+  # set up key variables:
+  text <- paste0('x <- data$',x_name)
+  eval(parse(text=text))
+  text <- paste0('y <- data$',y_name)
+  eval(parse(text=text))
   
   # from http://r.789695.n4.nabble.com/Obtaining-midpoints-of-class-intervals-produced-by-cut-and-table-td908058.html
   cut2num <- function(f){ 
@@ -123,7 +139,8 @@ bern_bin <- function(x,y,breaks,equal_spacing=TRUE){
     # correct for lower=TRUE in regexp (causes regexp not to match first label:
     d$xmin[1] <- as.numeric(sub("\\[(.+),.*", "\\1", labs)[1])
     d$xmid <- rowMeans(d) 
-    d 
+    return(d)
+#     rm(d)
   } 
   
   produce_df <- function(breaks){
@@ -131,16 +148,28 @@ bern_bin <- function(x,y,breaks,equal_spacing=TRUE){
     x_cut <- cut(x,breaks=breaks,include.lowest=TRUE)
     cut_limits <- cut2num(x_cut)
     
-    d <- data.frame(x = x_cut, y = y)
-    binomial_df <- ddply(d,.(x),summarise,n_success = sum(y), n_trials = length(y))
+    if(additional_factors == "none"){
+      d <- data.frame(x = x_cut, y = y)
+      binomial_df <- ddply(d,.(x),summarise,n_success = sum(y), n_trials = length(y))  
+    } else {
+      d <- data.frame(x = x_cut, y = y)
+      d <- cbind(d, subset(data, select = additional_factors))
+      factors <- c('x',additional_factors)
+      binomial_df <- ddply(d,factors,summarise,n_success = sum(y), n_trials = length(y))  
+    }
     
-    cut_limits$n_success <- binomial_df$n_success
-    cut_limits$n_fails <- binomial_df$n_trials - binomial_df$n_success
-    cut_limits$n_trials <- binomial_df$n_trials
-    cut_limits$prop_corr <- binomial_df$n_success / binomial_df$n_trials
+    instances <- nrow(binomial_df) / nrow(cut_limits)
+    df <- do.call("rbind", replicate(instances, cut_limits, simplify = FALSE))
+    df <- cbind(df, subset(binomial_df,select = -x))
+    df$n_fails <- binomial_df$n_trials - binomial_df$n_success
+    df$prop_corr <- binomial_df$n_success / binomial_df$n_trials
     
-    return(cut_limits)
+    df <- beta_cis(df, ...)
+    
+    return(df)
   }
+  
+  
   
 
   if(length(breaks)>1){
@@ -178,6 +207,8 @@ bern_bin <- function(x,y,breaks,equal_spacing=TRUE){
 #' @param rule_of_succession  If true, add one success and one failure to every observation
 #' (Laplace's rule of succession correction).
 #'
+#'@seealso \link{bern_bin}
+#'
 #' @author Thomas Wallis
 #' @examples
 #' example(bern_bin)
@@ -200,8 +231,8 @@ beta_cis <- function(data, probs = c(0.025, 0.5, 0.975), rule_of_succession = TR
   
   if(length(probs) == 2){
     data$ymin <- qbeta(probs[1],d$n_success,d$n_fails)
-    data$y <- d$n_success / (d$n_success + d$n_fails)
-    data$ymax <- qbeta(probs[3],d$n_success,d$n_fails)
+    data$y <- data$n_success / (data$n_success + data$n_fails)
+    data$ymax <- qbeta(probs[2],d$n_success,d$n_fails)
   }
   
   if(length(probs) != 3 & length(probs) != 2) 

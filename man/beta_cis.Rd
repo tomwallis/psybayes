@@ -33,4 +33,7 @@ example(bern_bin)
 \author{
   Thomas Wallis
 }
+\seealso{
+  \link{bern_bin}
+}
 
