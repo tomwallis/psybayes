@@ -161,12 +161,13 @@ bern_bin <- function(data, breaks, spacing = 'equal',
     
     instances <- nrow(binomial_df) / nrow(cut_limits)
     df <- do.call("rbind", replicate(instances, cut_limits, simplify = FALSE))
-    df <- cbind(df, subset(binomial_df,select = -x))
+    df <- cbind(df, binomial_df)
     df$n_fails <- binomial_df$n_trials - binomial_df$n_success
     df$prop_corr <- binomial_df$n_success / binomial_df$n_trials
     
-    df <- beta_cis(df, ...)
+    df <- rename(df, c("x" = paste0(x_name,"_factor")))
     
+    df <- beta_cis(df, ...)
     return(df)
   }
   
