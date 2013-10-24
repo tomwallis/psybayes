@@ -141,7 +141,6 @@ bern_bin <- function(data, breaks, spacing = 'equal',
     d$xmin[1] <- as.numeric(sub("\\[(.+),.*", "\\1", labs)[1])
     d$xmid <- rowMeans(d) 
     return(d)
-#     rm(d)
   } 
   
   produce_df <- function(breaks){
@@ -173,8 +172,11 @@ bern_bin <- function(data, breaks, spacing = 'equal',
   
   
   
-
+  
   if(length(breaks)>1){
+    # correct for breaks specified inside of data range: 
+    breaks[1] <- min(breaks[1],min(x))
+    breaks[length(breaks)] <- max(breaks[length(breaks)],max(x))
     df <- produce_df(breaks)
     return(df)
   } else {
@@ -226,7 +228,7 @@ beta_cis <- function(data, probs = c(0.025, 0.5, 0.975), rule_of_succession = TR
     d$n_trials <- data$n_trials + 2
   }
   
-
+  
   if(length(probs) == 3){
     data$ymin <- qbeta(probs[1],d$n_success,d$n_fails)
     data$ymax <- qbeta(probs[3],d$n_success,d$n_fails)
