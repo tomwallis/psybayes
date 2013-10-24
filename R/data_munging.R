@@ -228,14 +228,14 @@ beta_cis <- function(data, probs = c(0.025, 0.5, 0.975), rule_of_succession = TR
 
   if(length(probs) == 3){
     data$ymin <- qbeta(probs[1],d$n_success,d$n_fails)
-    data$y <- qbeta(probs[2],d$n_success,d$n_fails)
     data$ymax <- qbeta(probs[3],d$n_success,d$n_fails)
+    data$ymid <- qbeta(probs[2],d$n_success,d$n_fails)
   }
   
   if(length(probs) == 2){
     data$ymin <- qbeta(probs[1],d$n_success,d$n_fails)
-    data$y <- data$n_success / (data$n_success + data$n_fails)
     data$ymax <- qbeta(probs[2],d$n_success,d$n_fails)
+    data$ymid <- data$n_success / (data$n_success + data$n_fails)
   }
   
   if(length(probs) != 3 & length(probs) != 2) 
