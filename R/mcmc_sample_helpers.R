@@ -30,7 +30,7 @@
 #' model <- '
 #' data{
 #' int N;
-#' vector[N] dist;
+#' vector[N] distance;
 #' vector[N] speed;
 #' }
 #' 
@@ -44,13 +44,13 @@
 #' beta ~ normal(0,100);
 #' sigma ~ gamma(2,1e-5);
 #' mu <- beta[1] + beta[2] * speed;
-#' dist ~ normal(mu, sigma);
+#' distance ~ normal(mu, sigma);
 #' }
 #' '
 #' 
 #' data <- list(
 #'   N = nrow(cars) ,
-#'   dist = cars$dist ,
+#'   distance = cars$dist ,
 #'   speed = cars$speed
 #' )
 #' 
