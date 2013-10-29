@@ -148,7 +148,7 @@ bern_bin <- function(data, breaks, spacing = 'equal',
     x_cut <- cut(x,breaks=breaks,include.lowest=TRUE)
     cut_limits <- cut2num(x_cut)
     
-    if(additional_factors == "none"){
+    if(additional_factors[1] == "none" & length(additional_factors==1)){
       d <- data.frame(x = x_cut, y = y)
       binomial_df <- ddply(d,.(x),summarise,n_success = sum(y), n_trials = length(y))  
     } else {
