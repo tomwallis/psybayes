@@ -9,7 +9,8 @@
 #' @export  
 #' @import rstan doMC
 #' 
-#' @param model_string        A character vector of a stan model string (beginning with data block, etc.).
+#' @param file                A character string file name or connection that R supports containing the text of a model specification in the Stan language.
+#' @param model_string        A character vector of a stan model string (beginning with data block, etc.), if file not provided.
 #' @param stan_data           A list object containing named data that the stan model expects.
 #' @param n_saved_samples     The number of samples to save, across all chains.
 #' @param iter                The number of iterations to run the sampler per chain (must be at least n_saved_samples/n_chains).
@@ -60,7 +61,9 @@
 #' # compare to lm:
 #' summary(lm(dist ~ speed, cars))
 
-stan_sample <- function(model_string,stan_data,
+stan_sample <- function(file,
+                        model_string = "",
+                        stan_data = list(),
                         n_saved_samples=1000,
                         iter=1000,
                         warmup=floor(iter/2),
@@ -75,9 +78,16 @@ stan_sample <- function(model_string,stan_data,
   
   require(rstan)
   
-  # first fit bug test run:
-  initial_fit <- stan(model_code = model_string, data = stan_data,iter = 10, chains = 4, seed=seed)
+  # if supplied as model string, else as file:
+  if (model_string == ""){
+    # first fit bug test run:
+    initial_fit <- stan(file = file, data = stan_data,iter = 10, chains = 4, seed=seed)
+  }
   
+  if (model_string != ""){
+    # first fit bug test run:
+    initial_fit <- stan(model_code = model_string, data = stan_data,iter = 10, chains = 4, seed=seed)    
+  }
   
   if(parallel==TRUE){
     # set up for parallel sampling:

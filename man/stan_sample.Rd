@@ -2,7 +2,7 @@
 \alias{stan_sample}
 \title{Wrapper function for fitting stan models.}
 \usage{
-  stan_sample(model_string, stan_data,
+  stan_sample(file, model_string = "", stan_data = list(),
     n_saved_samples = 1000, iter = 1000,
     warmup = floor(iter/2), num_chains = 4,
     thin = floor((iter - warmup)/(n_saved_samples/num_chains)),
@@ -10,8 +10,13 @@
     parallel = TRUE, n_cores = 4, ...)
 }
 \arguments{
+  \item{file}{A character string file name or connection
+  that R supports containing the text of a model
+  specification in the Stan language.}
+
   \item{model_string}{A character vector of a stan model
-  string (beginning with data block, etc.).}
+  string (beginning with data block, etc.), if file not
+  provided.}
 
   \item{stan_data}{A list object containing named data that
   the stan model expects.}
