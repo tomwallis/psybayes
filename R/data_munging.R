@@ -93,6 +93,7 @@ bern2binom <- function(data, formula, group_factors='none', response='y'){
 #'
 #' @author Thomas Wallis
 #' @seealso \link{beta_cis}
+#' @family data_munging
 #' @examples
 #' library(ggplot2)
 #' dat <- data.frame(x = rnorm(100), y = rbinom(100,1,prob=0.5))
@@ -214,7 +215,7 @@ bern_bin <- function(data, breaks, spacing = 'equal',
 #' (Laplace's rule of succession correction).
 #'
 #'@seealso \link{bern_bin}
-#'
+#' @family data_munging#'
 #' @author Thomas Wallis
 #' @examples
 #' example(bern_bin)

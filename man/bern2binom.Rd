@@ -50,4 +50,7 @@ binom_list$design_matrix
 \author{
   Thomas Wallis.
 }
+\seealso{
+  Other data_munging: \code{\link{bern_bin}}
+}
 

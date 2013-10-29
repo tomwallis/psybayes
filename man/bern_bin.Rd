@@ -71,5 +71,7 @@ fig
 }
 \seealso{
   \link{beta_cis}
+
+  Other data_munging: \code{\link{bern2binom}}
 }
 
