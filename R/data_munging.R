@@ -151,12 +151,12 @@ bern_bin <- function(data, breaks, spacing = 'equal',
     
     if(additional_factors[1] == "none" & length(additional_factors==1)){
       d <- data.frame(x = x_cut, y = y)
-      binomial_df <- ddply(d,.(x),summarise,n_success = sum(y), n_trials = length(y))  
+      binomial_df <- ddply(d,.(x),summarise,n_success = sum(y), n_trials = length(y), .drop = FALSE)  
     } else {
       d <- data.frame(x = x_cut, y = y)
       d <- cbind(d, subset(data, select = additional_factors))
       factors <- c('x',additional_factors)
-      binomial_df <- ddply(d,factors,summarise,n_success = sum(y), n_trials = length(y))  
+      binomial_df <- ddply(d,factors,summarise,n_success = sum(y), n_trials = length(y), .drop = FALSE)  
     }
     
     instances <- nrow(binomial_df) / nrow(cut_limits)
