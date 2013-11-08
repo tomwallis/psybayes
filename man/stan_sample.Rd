@@ -3,8 +3,9 @@
 \title{Wrapper function for fitting stan models.}
 \usage{
   stan_sample(file_path = NULL, stan_data = list(),
-    model_string = NULL, n_saved_samples = 1000,
-    iter = 1000, warmup = floor(iter/2), num_chains = 4,
+    model_string = NULL, fit = NULL,
+    n_saved_samples = 1000, iter = 1000,
+    warmup = floor(iter/2), num_chains = 4,
     thin = floor((iter - warmup)/(n_saved_samples/num_chains)),
     seed = sample.int(.Machine$integer.max, 1),
     parallel = TRUE, n_cores = 4, ...)
@@ -21,6 +22,10 @@
   \item{model_string}{A character vector of a stan model
   string (beginning with data block, etc.), if file not
   provided.}
+
+  \item{fit}{A Stan fit object that you want to add more
+  samples to. This will cause file_path and model_string to
+  be ignored}
 
   \item{n_saved_samples}{The number of samples to save,
   across all chains.}

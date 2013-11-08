@@ -12,6 +12,7 @@
 #' @param file_path                A character string file name or connection that R supports containing the text of a model specification in the Stan language, if model_string not provided.
 #' @param stan_data           A list object containing named data that the stan model expects.
 #' @param model_string        A character vector of a stan model string (beginning with data block, etc.), if file not provided.
+#' @param fit                 A Stan fit object that you want to add more samples to. This will cause file_path and model_string to be ignored
 #' @param n_saved_samples     The number of samples to save, across all chains.
 #' @param iter                The number of iterations to run the sampler per chain (must be at least n_saved_samples/n_chains).
 #' @param warmup              The number of iterations that should be warmup.
@@ -64,6 +65,7 @@
 stan_sample <- function(file_path = NULL,
                         stan_data = list(),
                         model_string = NULL,
+                        fit = NULL,
                         n_saved_samples=1000,
                         iter=1000,
                         warmup=floor(iter/2),
@@ -86,17 +88,22 @@ stan_sample <- function(file_path = NULL,
   
   require(rstan)
   
-  # first fit bug test run:
-  # if supplied as model string, else as file:
-  if (is.null(file_path)){
-    print('file is null, using model string')
-    initial_fit <- stan(model_code = model_string, data = stan_data,iter = 10, chains = 4, seed=seed)    
+  if (is.null(fit)){
+    # first fit bug test run:
+    # if supplied as model string, else as file:
+    if (is.null(file_path)){
+      print('file is null, using model string')
+      initial_fit <- stan(model_code = model_string, data = stan_data,iter = 10, chains = 4, seed=seed)    
+    } else {
+      print('model string is null, using file path')
+      initial_fit <- stan(file = file_path, data = stan_data,iter = 10, chains = 4, seed=seed)
+    }
   } else {
-    print('model string is null, using file path')
-    initial_fit <- stan(file = file_path, data = stan_data,iter = 10, chains = 4, seed=seed)
+    # fit object provided, use that as initial fit.
+    initial_fit <- fit
   }
+    
   
-
   if(parallel==TRUE){
     # set up for parallel sampling:
     require(doMC)
