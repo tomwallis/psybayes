@@ -9,10 +9,10 @@
 #' @export  
 #' @import rstan doMC
 #' 
-#' @param file_path                A character string file name or connection that R supports containing the text of a model specification in the Stan language, if model_string not provided.
-#' @param stan_data           A list object containing named data that the stan model expects.
+#' @param file_path           A character string file name or connection that R supports containing the text of a model specification in the Stan language, if model_string not provided.
+#' @param data                A list object containing named data that the stan model expects.
 #' @param model_string        A character vector of a stan model string (beginning with data block, etc.), if file not provided.
-#' @param fit                 A Stan fit object that you want to add more samples to. This will cause file_path and model_string to be ignored
+#' @param fit                 A Stan fit object to take new samples from. This will cause file_path and model_string to be ignored
 #' @param n_saved_samples     The number of samples to save, across all chains.
 #' @param iter                The number of iterations to run the sampler per chain (must be at least n_saved_samples/n_chains).
 #' @param warmup              The number of iterations that should be warmup.
@@ -56,14 +56,14 @@
 #' )
 #' 
 #' # fit a linear model predicting distance from speed
-#' fit <- stan_sample(model_string=model, stan_data=data, iter = 250)
+#' fit <- stan_sample(model_string=model, data=data, iter = 250)
 #' print(fit)
 #' 
 #' # compare to lm:
 #' summary(lm(dist ~ speed, cars))
 
 stan_sample <- function(file_path = NULL,
-                        stan_data = list(),
+                        data = list(),
                         model_string = NULL,
                         fit = NULL,
                         n_saved_samples=1000,
@@ -93,10 +93,10 @@ stan_sample <- function(file_path = NULL,
     # if supplied as model string, else as file:
     if (is.null(file_path)){
       print('file is null, using model string')
-      initial_fit <- stan(model_code = model_string, data = stan_data,iter = 10, chains = 4, seed=seed)    
+      initial_fit <- stan(model_code = model_string, data = data,iter = 10, chains = 4, seed=seed)    
     } else {
       print('model string is null, using file path')
-      initial_fit <- stan(file = file_path, data = stan_data,iter = 10, chains = 4, seed=seed)
+      initial_fit <- stan(file = file_path, data = data,iter = 10, chains = 4, seed=seed)
     }
   } else {
     # fit object provided, use that as initial fit.
@@ -104,7 +104,6 @@ stan_sample <- function(file_path = NULL,
     initial_fit <- fit
   }
     
-  
   if(parallel==TRUE){
     # set up for parallel sampling:
     require(doMC)
@@ -113,7 +112,7 @@ stan_sample <- function(file_path = NULL,
     
     #prep for parallel case
     fun <- function(i){
-      fit <- stan(fit = initial_fit, data = stan_data, iter = iter, warmup = warmup, chains = 1, thin=thin, chain_id=i, seed=seed)
+      fit <- stan(fit = initial_fit, data = data, iter = iter, warmup = warmup, chains = 1, thin=thin, chain_id=i, seed=seed)
       return(fit)
     }
     
@@ -123,7 +122,7 @@ stan_sample <- function(file_path = NULL,
     fit <- sflist2stanfit(parallel_fit)
     
   } else {
-    fit <- stan(fit = initial_fit, data = stan_data, iter = iter, warmup = warmup, chains = num_chains, thin=thin, seed=seed)
+    fit <- stan(fit = initial_fit, data = data, iter = iter, warmup = warmup, chains = num_chains, thin=thin, seed=seed)
   }
   
   return(fit) 

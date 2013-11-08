@@ -2,7 +2,7 @@
 \alias{stan_sample}
 \title{Wrapper function for fitting stan models.}
 \usage{
-  stan_sample(file_path = NULL, stan_data = list(),
+  stan_sample(file_path = NULL, data = list(),
     model_string = NULL, fit = NULL,
     n_saved_samples = 1000, iter = 1000,
     warmup = floor(iter/2), num_chains = 4,
@@ -16,16 +16,15 @@
   specification in the Stan language, if model_string not
   provided.}
 
-  \item{stan_data}{A list object containing named data that
-  the stan model expects.}
+  \item{data}{A list object containing named data that the
+  stan model expects.}
 
   \item{model_string}{A character vector of a stan model
   string (beginning with data block, etc.), if file not
   provided.}
 
-  \item{fit}{A Stan fit object that you want to add more
-  samples to. This will cause file_path and model_string to
-  be ignored}
+  \item{fit}{A Stan fit object to take new samples from.
+  This will cause file_path and model_string to be ignored}
 
   \item{n_saved_samples}{The number of samples to save,
   across all chains.}
@@ -91,7 +90,7 @@ data <- list(
 )
 
 # fit a linear model predicting distance from speed
-fit <- stan_sample(model_string=model, stan_data=data, iter = 250)
+fit <- stan_sample(model_string=model, data=data, iter = 250)
 print(fit)
 
 # compare to lm:
