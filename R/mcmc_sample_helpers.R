@@ -100,6 +100,7 @@ stan_sample <- function(file_path = NULL,
     }
   } else {
     # fit object provided, use that as initial fit.
+    print('will generate new samples for the given fit object')
     initial_fit <- fit
   }
     
