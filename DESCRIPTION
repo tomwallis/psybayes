@@ -1,7 +1,7 @@
 Package: psybayes
 Type: Package
 Title: Fitting psychophysical data using MCMC.
-Version: 0.1
+Version: 0.2
 Date: 2013-10-12
 Author: Thomas Wallis <thomas.wallis@uni-tuebingen.de>
 Maintainer: Thomas Wallis <thomas.wallis@uni-tuebingen.de>

@@ -7,7 +7,7 @@
 #' Requires the rstan package to run.
 #' 
 #' @export  
-#' @import rstan doMC
+#' @import rstan parallel
 #' 
 #' @param file_path           A character string file name or connection that R supports containing the text of a model specification in the Stan language, if model_string not provided.
 #' @param data                A list object containing named data that the stan model expects.
@@ -56,7 +56,7 @@
 #' )
 #' 
 #' # fit a linear model predicting distance from speed
-#' fit <- stan_sample(model_string=model, data=data, iter = 250)
+#' fit <- stan_sample(model_string=model, data=data, iter = 2000, n_saved_samples = 1000)
 #' print(fit)
 #' 
 #' # compare to lm:
@@ -106,17 +106,17 @@ stan_sample <- function(file_path = NULL,
     
   if(parallel==TRUE){
     # set up for parallel sampling:
-    require(doMC)
-    options(cores=n_cores)
-    registerDoMC()
+    require(parallel)
     
     #prep for parallel case
-    fun <- function(i){
-      fit <- stan(fit = initial_fit, data = data, iter = iter, warmup = warmup, chains = 1, thin=thin, chain_id=i, seed=seed)
+    fun <- function(X){
+      fit <- stan(fit = initial_fit, data = data, iter = iter, warmup = warmup, chains = 1, thin=thin, chain_id=X, seed=seed)
       return(fit)
     }
     
-    parallel_fit <- foreach(i = 1:num_chains) %dopar% fun(i)
+    parallel_fit <- mclapply(1:num_chains,fun,
+                        mc.preschedule = FALSE,
+                        mc.cores = n_cores)  
     
     # squish fit objects together:
     fit <- sflist2stanfit(parallel_fit)
