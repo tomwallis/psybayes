@@ -90,7 +90,7 @@ data <- list(
 )
 
 # fit a linear model predicting distance from speed
-fit <- stan_sample(model_string=model, data=data, iter = 250, n_saved_samples = 500)
+fit <- stan_sample(model_string=model, data=data, iter = 2000, n_saved_samples = 1000)
 print(fit)
 
 # compare to lm:
