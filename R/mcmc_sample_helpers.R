@@ -110,14 +110,16 @@ stan_sample <- function(file_path = NULL,
     
     #prep for parallel case
     fun <- function(X){
-      fit <- stan(fit = initial_fit, data = data, iter = iter, warmup = warmup, chains = 1, thin=thin, chain_id=X, seed=seed)
+      fit <- stan(fit = initial_fit, data = data, 
+                  iter = iter, warmup = warmup, 
+                  chains = 1, thin=thin, chain_id=X, seed=seed,
+                  verbose = FALSE, refresh = -1)
       return(fit)
     }
     
     parallel_fit <- mclapply(1:num_chains,fun,
-                        mc.preschedule = FALSE,
                         mc.cores = n_cores)  
-    
+    # mc.preschedule=FALSE?    
     # squish fit objects together:
     fit <- sflist2stanfit(parallel_fit)
     
