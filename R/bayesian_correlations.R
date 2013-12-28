@@ -162,7 +162,7 @@ model {
 
 ')
   
-  fit <- stan_sample(model_string = model, stan_data = stan_data, ...)
+  fit <- stan_sample(model_string = model, data = stan_data, ...)
   
   return(fit)
 }
