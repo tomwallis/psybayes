@@ -2,9 +2,8 @@
 \alias{bcor_table}
 \title{Table of correlation coefficients with HDIs.}
 \usage{
-  bcor_table(data_frame, fit, variable_names = FALSE,
-    central_tendency_function = mean,
-    spread_function = hdi)
+bcor_table(data_frame, fit, variable_names = FALSE,
+  central_tendency_function = mean, spread_function = hdi)
 }
 \arguments{
   \item{data_frame}{A data frame where rows are
@@ -29,24 +28,24 @@
   (lower, upper) given input as a vector.}
 }
 \value{
-  A list of tables suitable for passing to the xtable
-  function. One table is for the Pearson Product Moment
-  correlation coefficent, one is for Spearman's rho (rank
-  order correlation) and the third are the same computed
-  from samples of the prior distribution.
+A list of tables suitable for passing to the xtable
+function. One table is for the Pearson Product Moment
+correlation coefficent, one is for Spearman's rho (rank
+order correlation) and the third are the same computed from
+samples of the prior distribution.
 }
 \description{
-  Generate a numerical matrix of the correlation
-  coefficients estimated by bcor_mcmc.
+Generate a numerical matrix of the correlation coefficients
+estimated by bcor_mcmc.
 }
 \examples{
 See the example for bcor_mcmc.
 }
 \author{
-  Thomas Wallis.
+Thomas Wallis.
 }
 \seealso{
-  Other bcor: \code{\link{bcor_mcmc}},
-  \code{\link{bcor_plot}}
+Other bcor: \code{\link{bcor_mcmc}};
+\code{\link{bcor_plot}}
 }
 

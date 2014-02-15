@@ -2,8 +2,8 @@
 \alias{bcor_plot}
 \title{Plot posterior correlation coefficients.}
 \usage{
-  bcor_plot(data_frame, fit, out_file = "none",
-    true_correlations = FALSE, plot_prior = TRUE)
+bcor_plot(data_frame, fit, out_file = "none", true_correlations = FALSE,
+  plot_prior = TRUE)
 }
 \arguments{
   \item{data_frame}{A data frame where rows are
@@ -26,23 +26,23 @@
   density from the model.}
 }
 \value{
-  If \code{out_file} contains a filename with .pdf
-  extension, a plot of each pairwise correlation is sent to
-  out_file. Otherwise these are printed to R. The dark
-  histogram shows samples from the posterior, the faint
-  histogram shows samples from the prior.
+If \code{out_file} contains a filename with .pdf extension,
+a plot of each pairwise correlation is sent to out_file.
+Otherwise these are printed to R. The dark histogram shows
+samples from the posterior, the faint histogram shows
+samples from the prior.
 }
 \description{
-  Plot the correlation coefficients estimated by bcor_mcmc.
+Plot the correlation coefficients estimated by bcor_mcmc.
 }
 \examples{
 See the example for bcor_mcmc.
 }
 \author{
-  Thomas Wallis.
+Thomas Wallis.
 }
 \seealso{
-  Other bcor: \code{\link{bcor_mcmc}},
-  \code{\link{bcor_table}}
+Other bcor: \code{\link{bcor_mcmc}};
+\code{\link{bcor_table}}
 }
 

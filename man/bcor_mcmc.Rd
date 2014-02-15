@@ -2,7 +2,7 @@
 \alias{bcor_mcmc}
 \title{Estimate Bayesian (posterior) correlation coefficients.}
 \usage{
-  bcor_mcmc(data_frame, prior = "lkj_corr(1.0)", ...)
+bcor_mcmc(data_frame, prior = "lkj_corr(1.0)", ...)
 }
 \arguments{
   \item{data_frame}{A data frame where rows are
@@ -17,40 +17,38 @@
   function.}
 }
 \value{
-  Returns an rstan fit object.
+Returns an rstan fit object.
 }
 \description{
-  Estimate Pearson's r and Spearman's rho between the
-  columns in a data frame. This is a wrapper function for
-  Stan.
+Estimate Pearson's r and Spearman's rho between the columns
+in a data frame. This is a wrapper function for Stan.
 }
 \details{
-  This function takes a numerical data matrix X as input.
-  From this, the Pearson r and Spearman's rho (rank order
-  correlation coefficient) will be estimated using MCMC
-  sampling from the \link{stan} package. Currently the
-  function standardises the data internally (using the
-  \link{scale} function), but could be easily modified to
-  also estimate the mean and variance of each variable.
+This function takes a numerical data matrix X as input.
+From this, the Pearson r and Spearman's rho (rank order
+correlation coefficient) will be estimated using MCMC
+sampling from the \link{stan} package. Currently the
+function standardises the data internally (using the
+\link{scale} function), but could be easily modified to
+also estimate the mean and variance of each variable.
 
-  The \code{prior} is applied to each correlation matrix
-  (Pearson and Spearman). The default is a multivariate
-  version of a Beta distribution with parameters (1,1),
-  i.e. it is multivariate uniform, scaled over the range -1
-  to 1. See Stan manual for details.
+The \code{prior} is applied to each correlation matrix
+(Pearson and Spearman). The default is a multivariate
+version of a Beta distribution with parameters (1,1), i.e.
+it is multivariate uniform, scaled over the range -1 to 1.
+See Stan manual for details.
 
-  For a big example of all this in action, run
-  \code{example(bcor_mcmc)}.
+For a big example of all this in action, run
+\code{example(bcor_mcmc)}.
 
-  Note: on my todo list is to fix the warning output about
-  incrementing the log Jacobian. However, this doesn't seem
-  to be a problem for the sampling. See
-  \url{https://groups.google.com/forum/#!topic/stan-users/9GCAlBWVBtI}.
-  "Like some of our other warning messages, there are
-  "false positives" from this because some of the
-  transforms applied (like taking the column of a matrix
-  using function col()) have a zero log Jacobian
-  adjustment. "
+Note: on my todo list is to fix the warning output about
+incrementing the log Jacobian. However, this doesn't seem
+to be a problem for the sampling. See
+\url{https://groups.google.com/forum/#!topic/stan-users/9GCAlBWVBtI}.
+"Like some of our other warning messages, there are "false
+positives" from this because some of the transforms applied
+(like taking the column of a matrix using function col())
+have a zero log Jacobian adjustment. "
 }
 \examples{
 # generate random variables with a specified correlation structure (from: http://www.r-bloggers.com/simulating-data-following-a-given-covariance-structure/)
@@ -89,12 +87,12 @@ tables_2$pearson_table
 cor(dat)
 }
 \author{
-  Thomas Wallis.
+Thomas Wallis.
 }
 \seealso{
-  \link{stan_sample}, \link{stan}
+\link{stan_sample}, \link{stan}
 
-  Other bcor: \code{\link{bcor_plot}},
-  \code{\link{bcor_table}}
+Other bcor: \code{\link{bcor_plot}};
+\code{\link{bcor_table}}
 }
 

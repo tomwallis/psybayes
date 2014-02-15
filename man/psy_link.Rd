@@ -2,38 +2,36 @@
 \alias{psy_link}
 \title{Define link functions.}
 \usage{
-  psy_link(link)
+psy_link(link)
 }
 \arguments{
   \item{link}{Character; one of "logit", "probit",
   "cauchy", "cloglog".}
 }
 \value{
-  Returns an object of class "psybayes_link". This is
-  really just a list, with the following components:
-  \itemize{ \item \code{linkfun}: transform from
-  probability to linear predictor. \item \code{linkinv}:
-  transform from linear predictor to probability. \item
-  \code{stan_string} **NOT IMPLEMENTED YET** \item
-  \code{name} }
+Returns an object of class "psybayes_link". This is really
+just a list, with the following components: \itemize{ \item
+\code{linkfun}: transform from probability to linear
+predictor. \item \code{linkinv}: transform from linear
+predictor to probability. \item \code{stan_string} **NOT
+IMPLEMENTED YET** \item \code{name} }
 }
 \description{
-  This function can be used to create an S3 object of class
-  "psybayes_link" that includes link and inverse link
-  functions for transforming from linear predictor space
-  into probability space. Eventually this should have code
-  for inserting into Stan models. It is a modified version
-  of \link{make.link} from the stats package.
+This function can be used to create an S3 object of class
+"psybayes_link" that includes link and inverse link
+functions for transforming from linear predictor space into
+probability space. Eventually this should have code for
+inserting into Stan models. It is a modified version of
+\link{make.link} from the stats package.
 }
 \details{
-  The link functions returned in the object accept three
-  arguments: \itemize{ \item \code{mu} or \code{eta}: for
-  link and inverse link respectively; the p value or the
-  linear predictor. \item \code{gamma}: the lower bound of
-  the psychometric function (defaults to zero). \item
-  \code{lambda}: the lapse rate of the psychometric
-  function (upper bound is \code{1 - lambda}; defaults to
-  zero). }
+The link functions returned in the object accept three
+arguments: \itemize{ \item \code{mu} or \code{eta}: for
+link and inverse link respectively; the p value or the
+linear predictor. \item \code{gamma}: the lower bound of
+the psychometric function (defaults to zero). \item
+\code{lambda}: the lapse rate of the psychometric function
+(upper bound is \code{1 - lambda}; defaults to zero). }
 }
 \examples{
 logistic <- psy_link('logit')
@@ -67,9 +65,9 @@ ggplot(d1,aes(x=mu,y=V1,colour=link)) + geom_line() + facet_grid(gamma ~ lambda)
 ggplot(d2,aes(x=eta,y=V1,colour=link)) + geom_line() + facet_grid(gamma ~ lambda) + xlab('linear predictor') + ylab('p(c)')
 }
 \author{
-  Thomas Wallis.
+Thomas Wallis.
 }
 \seealso{
-  Other glm_helpers: \code{\link{linpred}}
+Other glm_helpers: \code{\link{linpred}}
 }
 

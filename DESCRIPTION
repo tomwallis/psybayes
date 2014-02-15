@@ -1,8 +1,8 @@
 Package: psybayes
 Type: Package
 Title: Fitting psychophysical data using MCMC.
-Version: 0.2
-Date: 2013-10-12
+Version: 0.2.1
+Date: 2014-15-02
 Author: Thomas Wallis <thomas.wallis@uni-tuebingen.de>
 Maintainer: Thomas Wallis <thomas.wallis@uni-tuebingen.de>
 Description: psybayes is a package to facilitate the fitting of data from
@@ -15,12 +15,3 @@ License: GPL-3
 Imports:
     rstan,
     plyr
-Collate:
-    'psybayes.R'
-    'bayesian_correlations.R'
-    'binomial_model_comparison_metrics.R'
-    'mcmc_sample_helpers.R'
-    'quantiles_hdis.R'
-    'detection_data.R'
-    'glm_helpers.R'
-    'data_munging.R'

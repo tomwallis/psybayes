@@ -2,8 +2,7 @@
 \alias{bern2binom}
 \title{Binomial design matrix from Bernoulli trials.}
 \usage{
-  bern2binom(data, formula, group_factors = "none",
-    response = "y")
+bern2binom(data, formula, group_factors = "none", response = "y")
 }
 \arguments{
   \item{data}{A data frame with rows as Bernoulli trials.}
@@ -19,20 +18,19 @@
   the response variable (correct or incorrect).}
 }
 \value{
-  Returns a new data frame.
+Returns a new data frame.
 }
 \description{
-  Transform a data frame where each row is a Bernoulli
-  trial into a binomial data frame (ntrials, nsucceses)
-  based on the design matrix for a model.
+Transform a data frame where each row is a Bernoulli trial
+into a binomial data frame (ntrials, nsucceses) based on
+the design matrix for a model.
 }
 \details{
-  In Stan it is often much more efficient to sample a model
-  binomially rather than as individual Bernoulli trials.
-  This function can be used to transform a data frame of
-  Bernoulli trials (like you might save in an experiment)
-  into a binomial data frame, based on a formula for the
-  model.
+In Stan it is often much more efficient to sample a model
+binomially rather than as individual Bernoulli trials. This
+function can be used to transform a data frame of Bernoulli
+trials (like you might save in an experiment) into a
+binomial data frame, based on a formula for the model.
 }
 \examples{
 data(detection)
@@ -48,9 +46,9 @@ binom_list$binom_dat
 binom_list$design_matrix
 }
 \author{
-  Thomas Wallis.
+Thomas Wallis.
 }
 \seealso{
-  Other data_munging: \code{\link{bern_bin}}
+Other data_munging: \code{\link{bern_bin}}
 }
 

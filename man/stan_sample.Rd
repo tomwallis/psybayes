@@ -2,13 +2,12 @@
 \alias{stan_sample}
 \title{Wrapper function for fitting stan models.}
 \usage{
-  stan_sample(file_path = NULL, data = list(),
-    model_string = NULL, fit = NULL,
-    n_saved_samples = 1000, iter = 1000,
-    warmup = floor(iter/2), num_chains = 4,
-    thin = floor((iter - warmup)/(n_saved_samples/num_chains)),
-    seed = sample.int(.Machine$integer.max, 1),
-    parallel = TRUE, n_cores = 4, ...)
+stan_sample(file_path = NULL, data = list(), model_string = NULL,
+  fit = NULL, n_saved_samples = 1000, iter = 1000,
+  warmup = floor(iter/2), num_chains = 4, thin = floor((iter -
+  warmup)/(n_saved_samples/num_chains)),
+  seed = sample.int(.Machine$integer.max, 1), parallel = TRUE,
+  n_cores = 4, ...)
 }
 \arguments{
   \item{file_path}{A character string file name or
@@ -53,12 +52,12 @@
   function.}
 }
 \value{
-  Returns an rstan fit object.
+Returns an rstan fit object.
 }
 \description{
-  A wrapper function for fitting Stan models using Tom's
-  common settings. Also includes some ability to
-  paralellise code. Requires the rstan package to run.
+A wrapper function for fitting Stan models using Tom's
+common settings. Also includes some ability to paralellise
+code. Requires the rstan package to run.
 }
 \examples{
 data(cars)
@@ -97,9 +96,9 @@ print(fit)
 summary(lm(dist ~ speed, cars))
 }
 \author{
-  Thomas Wallis.
+Thomas Wallis.
 }
 \seealso{
-  \link{stan}
+\link{stan}
 }
 

@@ -2,8 +2,8 @@
 \alias{bern_bin}
 \title{Bin bernoulli trials on a continuous variable x, calculate stats.}
 \usage{
-  bern_bin(data, breaks, spacing = "equal", x_name = "x",
-    y_name = "y", additional_factors = "none", ...)
+bern_bin(data, breaks, spacing = "equal", x_name = "x", y_name = "y",
+  additional_factors = "none", ...)
 }
 \arguments{
   \item{data}{a data frame containing (at least) a numeric
@@ -31,12 +31,12 @@
   \link{beta_cis}.}
 }
 \value{
-  a data frame with x bins as rows, and the number of
-  successes, fails, and trials in each bin.
+a data frame with x bins as rows, and the number of
+successes, fails, and trials in each bin.
 }
 \description{
-  Takes an x and a y vector, where y is binary (bernoulli
-  trials).
+Takes an x and a y vector, where y is binary (bernoulli
+trials).
 }
 \examples{
 library(ggplot2)
@@ -67,11 +67,11 @@ fig <- fig + facet_wrap(~ a_factor, ncol=1)
 fig
 }
 \author{
-  Thomas Wallis
+Thomas Wallis
 }
 \seealso{
-  \link{beta_cis}
+\link{beta_cis}
 
-  Other data_munging: \code{\link{bern2binom}}
+Other data_munging: \code{\link{bern2binom}}
 }
 
